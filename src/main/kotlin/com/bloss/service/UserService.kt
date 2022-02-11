@@ -45,4 +45,8 @@ class UserService(
         response["userId"] = userId.toString()
         return response
     }
+
+    fun isUserExists(userId: Long): Boolean {
+        return userRepository.existsById(userId)
+    }
 }

@@ -9,12 +9,12 @@ data class User(
     @Id @GeneratedValue
     var id: Long = -1,
     @Email
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     var email: String,
-    @Column(nullable = false)
+    @Column
     var password: String,
-    @Column(nullable = false)
+    @Column
     var firstName: String,
-    @Column(nullable = false)
+    @Column
     var secondName: String
 )

@@ -4,8 +4,8 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 data class JwtUser(
-    private val id: Long,
-    private val email: String?,
+    val id: Long,
+    val email: String?,
     private val password: String?,
 ) : UserDetails {
     companion object {

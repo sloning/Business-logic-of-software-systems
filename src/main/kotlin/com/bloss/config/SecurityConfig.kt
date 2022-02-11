@@ -4,6 +4,8 @@ import com.bloss.security.JwtTokenFilter
 import com.bloss.security.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -15,12 +17,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 class SecurityConfig(private val jwtTokenProvider: JwtTokenProvider) : WebSecurityConfigurerAdapter() {
     override fun configure(webSecurity: WebSecurity) {
         webSecurity
             .ignoring()
             .antMatchers("/api/*/user/**")
-            .antMatchers("/**")
     }
 
     override fun configure(http: HttpSecurity) {
@@ -33,8 +35,12 @@ class SecurityConfig(private val jwtTokenProvider: JwtTokenProvider) : WebSecuri
             .disable()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//            .and()
-//            .authorizeRequests()
+            .and()
+            .authorizeRequests()
+            .antMatchers("/api/*/post")
+            .authenticated()
+            .antMatchers(HttpMethod.GET, "api/*/post")
+            .permitAll()
             .and()
             .addFilterBefore(JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
     }
