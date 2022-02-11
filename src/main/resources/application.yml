@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: "${db_host}bloss"
+    driver-class-name: org.postgresql.Driver
+    username: ${db_username}
+    password: ${db_password}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+app:
+  tokenSecret: ${SECURITY_SECRET}
+  tokenExpirationMSec: 864000000
+  tokenPrefix: "Bearer "
+  headerString: "Authorization"
+  cors:
+    allowedOrigins: http://localhost:8080
