@@ -1,6 +1,4 @@
 package com.bloss.exception
 
-class BadRequestException : RuntimeException {
-    constructor(message: String) : super(message) {}
-    constructor(message: String, cause: Throwable) : super(message, cause) {}
+class BadRequestException(message: String) : RuntimeException(message) {
 }
