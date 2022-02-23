@@ -2,7 +2,7 @@ package com.bloss.service
 
 import com.bloss.dto.LoginDto
 import com.bloss.dto.RegisterDto
-import com.bloss.exception.BadRequestException
+import com.bloss.exception.EntityAlreadyExists
 import com.bloss.model.User
 import com.bloss.repository.UserRepository
 import com.bloss.security.JwtTokenProvider
@@ -24,7 +24,7 @@ class UserService(
 
     fun registerUser(registerDto: RegisterDto): Map<String, String> {
         if (userRepository.existsByEmail(registerDto.email)) {
-            throw BadRequestException("Пользователь с таким email адресом уже существует")
+            throw EntityAlreadyExists("Пользователь с таким email адресом уже существует")
         }
 
         var user = User(
