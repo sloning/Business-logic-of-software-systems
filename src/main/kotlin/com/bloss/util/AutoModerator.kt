@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class AutoModerator {
     private val badWords =
         try {
-            ClassPathResource("bad_words.txt").file.readLines().toSet()
+            ClassPathResource("bad_words.txt").inputStream.toString().toSet()
         } catch (e: Exception) {
             throw NoBadWordsDictionaryException("No bad words dictionary found in class path")
             emptySet()
