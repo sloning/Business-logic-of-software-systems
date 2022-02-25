@@ -22,7 +22,9 @@ class SecurityConfig(private val jwtTokenProvider: JwtTokenProvider) : WebSecuri
     override fun configure(webSecurity: WebSecurity) {
         webSecurity
             .ignoring()
+            .antMatchers(HttpMethod.GET, "/api/*/post")
             .antMatchers("/api/*/user/**")
+            .antMatchers("/swagger-ui/**", "/v3/api-docs/**")
     }
 
     override fun configure(http: HttpSecurity) {
@@ -37,10 +39,8 @@ class SecurityConfig(private val jwtTokenProvider: JwtTokenProvider) : WebSecuri
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/api/*/post")
+            .anyRequest()
             .authenticated()
-            .antMatchers(HttpMethod.GET, "api/*/post")
-            .permitAll()
             .and()
             .addFilterBefore(JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
     }
