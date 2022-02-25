@@ -8,7 +8,7 @@ import javax.validation.constraints.Email
 data class User(
     @Id @GeneratedValue
     var id: Long = -1,
-    @Email
+    @field:Email
     @Column(unique = true)
     var email: String,
     @Column

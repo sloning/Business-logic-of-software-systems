@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v1/post")
@@ -18,13 +19,13 @@ class PostController(
     fun getAll(pageable: Pageable): Page<Post> = postService.findAll(pageable)
 
     @PostMapping
-    fun create(post: Post) = postService.create(post)
+    fun create(@Valid @RequestBody post: Post) = postService.create(post)
 
     @PutMapping
     @PreAuthorize("@creatorChecker.check(#post)")
-    fun update(post: Post) = postService.update(post)
+    fun update(@Valid @RequestBody post: Post) = postService.update(post)
 
     @DeleteMapping
     @PreAuthorize("@creatorChecker.check(#post)")
-    fun delete(post: Post) = postService.delete(post)
+    fun delete(@Valid @RequestBody post: Post) = postService.delete(post)
 }
