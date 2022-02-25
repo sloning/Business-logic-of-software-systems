@@ -17,4 +17,4 @@ app:
   tokenPrefix: "Bearer "
   headerString: "Authorization"
   cors:
-    allowedOrigins: http://localhost:8080
+    allowedOrigins: http://localhost:8080, http://20.67.104.18:8080
