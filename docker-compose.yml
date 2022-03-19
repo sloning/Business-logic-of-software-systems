@@ -29,7 +29,7 @@ services:
     links:
       - bloss_postgres
     environment:
-      db_host: jdbc:postgresql://bloss_postgres:5432/
+      db_host: jdbc:postgresql://bloss_postgres:5432
       db_username: postgres
       db_password: $db_password
       SECURITY_SECRET: $SECURITY_SECRET

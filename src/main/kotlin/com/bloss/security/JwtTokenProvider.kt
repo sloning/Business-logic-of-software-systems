@@ -3,10 +3,12 @@ package com.bloss.security
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
+import com.auth0.jwt.interfaces.Claim
 import com.auth0.jwt.interfaces.JWTVerifier
 import com.bloss.config.AppProperties
 import com.bloss.exception.JwtAuthenticationException
 import com.bloss.exception.JwtResolvationException
+import com.bloss.model.ROLE
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
@@ -17,11 +19,12 @@ import javax.servlet.http.HttpServletRequest
 class JwtTokenProvider(private val appProperties: AppProperties) {
     private val algorithm: Algorithm = Algorithm.HMAC256(appProperties.auth.tokenSecret)
 
-    fun createToken(subject: String): String {
+    fun createToken(id: Long, role: ROLE): String {
         val expirationDate = Date(Date().time + appProperties.auth.tokenExpirationMSec)
+        val claims: Map<String, Any> = mapOf("id" to id, "role" to role.toString())
 
         return JWT.create()
-            .withSubject(subject)
+            .withPayload(claims)
             .withIssuer("bloss")
             .withExpiresAt(expirationDate)
             .sign(algorithm)
@@ -31,8 +34,11 @@ class JwtTokenProvider(private val appProperties: AppProperties) {
         val bearerToken = req.getHeader(appProperties.auth.headerString)
         return if (bearerToken != null && bearerToken.startsWith(appProperties.auth.tokenPrefix)) {
             bearerToken.substring(7)
-        } else throw JwtResolvationException("Неверный JWT токен. Пожалуйста, пройдите аутентификацию вновь")
+        } else badToken()
     }
+
+    private fun badToken(): Nothing =
+        throw throw JwtResolvationException("Неверный JWT токен. Пожалуйста, пройдите аутентификацию вновь")
 
     fun verifyToken(token: String): Boolean {
         return try {
@@ -46,12 +52,15 @@ class JwtTokenProvider(private val appProperties: AppProperties) {
         }
     }
 
-    fun getPlayerId(token: String): String {
-        return JWT.decode(token).subject
-    }
+    private fun getClaims(token: String): Map<String, Claim> = JWT.decode(token).claims
+
+    private fun getUserId(claims: Map<String, Claim>): Long = claims["id"]?.asLong() ?: badToken()
+
+    private fun getUserRole(claims: Map<String, Claim>): ROLE = claims["role"]?.`as`(ROLE::class.java) ?: badToken()
 
     fun getAuthentication(token: String): Authentication {
-        val userDetails: JwtUser = JwtUser.create(getPlayerId(token))
+        val claims: Map<String, Claim> = getClaims(token)
+        val userDetails: JwtUser = JwtUser.create(getUserId(claims), getUserRole(claims))
         return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
     }
 }

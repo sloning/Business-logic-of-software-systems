@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: "${db_host}bloss"
+    url: "${db_host}/bloss"
     driver-class-name: org.postgresql.Driver
     username: ${db_username}
     password: ${db_password}
@@ -12,6 +12,7 @@ spring:
       ddl-auto: update
 
 app:
+  xmlUserRepository: classpath:/user_repository.xml
   tokenSecret: ${SECURITY_SECRET}
   tokenExpirationMSec: 864000000
   tokenPrefix: "Bearer "

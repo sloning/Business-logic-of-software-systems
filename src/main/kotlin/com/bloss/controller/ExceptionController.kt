@@ -41,6 +41,12 @@ class ExceptionController {
         return ErrorResponse.wrongCredentials(ex, 5)
     }
 
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(LoginException::class)
+//    fun handleLoginException(ex: Exception): ErrorResponse {
+//        return ErrorResponse.wrongCredentials(ex, 5)
+//    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValidException(ex: Exception): ErrorResponse {
