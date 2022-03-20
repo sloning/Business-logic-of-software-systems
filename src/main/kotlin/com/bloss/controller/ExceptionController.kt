@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import javax.persistence.EntityNotFoundException
+import javax.security.auth.login.LoginException
 
 @RestControllerAdvice
 class ExceptionController {
@@ -41,11 +42,11 @@ class ExceptionController {
         return ErrorResponse.wrongCredentials(ex, 5)
     }
 
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(LoginException::class)
-//    fun handleLoginException(ex: Exception): ErrorResponse {
-//        return ErrorResponse.wrongCredentials(ex, 5)
-//    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(LoginException::class)
+    fun handleLoginException(ex: Exception): ErrorResponse {
+        return ErrorResponse.wrongCredentials(ex, 5)
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)

@@ -8,7 +8,8 @@ import com.auth0.jwt.interfaces.JWTVerifier
 import com.bloss.config.AppProperties
 import com.bloss.exception.JwtAuthenticationException
 import com.bloss.exception.JwtResolvationException
-import com.bloss.model.ROLE
+import com.bloss.model.Role
+import com.bloss.repository.UserXmlRepository
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
@@ -17,9 +18,10 @@ import javax.servlet.http.HttpServletRequest
 
 @Component
 class JwtTokenProvider(private val appProperties: AppProperties) {
+    private val userRepository = UserXmlRepository
     private val algorithm: Algorithm = Algorithm.HMAC256(appProperties.auth.tokenSecret)
 
-    fun createToken(id: Long, role: ROLE): String {
+    fun createToken(id: Long, role: Role): String {
         val expirationDate = Date(Date().time + appProperties.auth.tokenExpirationMSec)
         val claims: Map<String, Any> = mapOf("id" to id, "role" to role.toString())
 
@@ -56,11 +58,14 @@ class JwtTokenProvider(private val appProperties: AppProperties) {
 
     private fun getUserId(claims: Map<String, Claim>): Long = claims["id"]?.asLong() ?: badToken()
 
-    private fun getUserRole(claims: Map<String, Claim>): ROLE = claims["role"]?.`as`(ROLE::class.java) ?: badToken()
+//    private fun getUserRole(claims: Map<String, Claim>): Role = claims["role"]?.`as`(Role::class.java) ?: badToken()
+
+    private fun getUserRole(userId: Long): Role = userRepository.findRoleById(userId) ?: badToken()
 
     fun getAuthentication(token: String): Authentication {
         val claims: Map<String, Claim> = getClaims(token)
-        val userDetails: JwtUser = JwtUser.create(getUserId(claims), getUserRole(claims))
+        val userId = getUserId(claims)
+        val userDetails: JwtUser = JwtUser.create(userId, getUserRole(userId))
         return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
     }
 }

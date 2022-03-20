@@ -1,6 +1,6 @@
 package com.bloss.security
 
-import com.bloss.model.ROLE
+import com.bloss.model.Role
 import com.bloss.model.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -10,10 +10,10 @@ data class JwtUser(
     val id: Long,
     val email: String?,
     private val password: String?,
-    val role: ROLE
+    val role: Role
 ) : UserDetails {
     companion object {
-        fun create(userId: Long, role: ROLE): JwtUser {
+        fun create(userId: Long, role: Role): JwtUser {
             return JwtUser(
                 userId,
                 null,
@@ -33,7 +33,7 @@ data class JwtUser(
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return mutableListOf(SimpleGrantedAuthority(role.toString()))
+        return mutableListOf(SimpleGrantedAuthority(role.name))
     }
 
     override fun getPassword(): String? {

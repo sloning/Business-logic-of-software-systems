@@ -1,6 +1,6 @@
 package com.bloss.repository
 
-import com.bloss.model.ROLE
+import com.bloss.model.Role
 import com.bloss.model.User
 import org.springframework.beans.factory.annotation.Value
 import java.beans.XMLDecoder
@@ -48,11 +48,13 @@ object UserXmlRepository {
 
     fun existsByEmail(email: String): Boolean = findByEmail(email) != null
 
-    fun findRoleByEmail(email: String): ROLE? = findByEmail(email)?.role
+    fun findRoleByEmail(email: String): Role? = findByEmail(email)?.role
 
     fun findById(id: Long): User? = findAll().find { it.id == id }
 
     fun existsById(id: Long): Boolean = findById(id) != null
+
+    fun findRoleById(id: Long): Role? = findById(id)?.role
 
     private fun findAll(): List<User> =
         File(repoPath).listFiles()?.mapNotNull { file ->

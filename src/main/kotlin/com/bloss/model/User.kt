@@ -19,12 +19,11 @@ data class User(
     var secondName: String,
     @Column
     @Enumerated
-    var role: ROLE = ROLE.ROLE_USER,
+    var role: Role = Role.ROLE_USER,
     @Column
     @Enumerated
-    var status: STATUS = STATUS.ACTIVE
+    var userStatus: UserStatus = UserStatus.ACTIVE
 )
 
-enum class ROLE { ROLE_ADMIN, ROLE_USER, ROLE_MODERATOR }
-
-enum class STATUS { LOCKED, BANNED, ACTIVE, DELETED }
+enum class Role { ROLE_ADMIN, ROLE_USER, ROLE_MODERATOR }
+enum class UserStatus { LOCKED, BANNED, ACTIVE, DELETED }

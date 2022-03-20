@@ -28,6 +28,9 @@ data class Post(
     var typeOfPost: TypeOfPost,
     @Column
     @Enumerated(EnumType.STRING)
+    var status: PostStatus = PostStatus.HIDDEN,
+    @Column
+    @Enumerated(EnumType.STRING)
     var typeOfEstate: TypeOfEstate,
     @Column
     var userId: Long = -1,
@@ -38,3 +41,4 @@ data class Post(
 
 enum class TypeOfPost { SALE, RENT }
 enum class TypeOfEstate { LAND, HOUSE, FLAT, ROOM }
+enum class PostStatus { ACTIVE, HIDDEN, DELETED }

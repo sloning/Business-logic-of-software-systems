@@ -2,9 +2,13 @@ package com.bloss.service
 
 import com.bloss.dto.LoginDto
 import com.bloss.dto.RegisterDto
+import com.bloss.dto.RoleChangeDto
+import com.bloss.dto.UserStatusChangeDto
+import com.bloss.exception.BadRequestException
 import com.bloss.exception.EntityAlreadyExists
 import com.bloss.exception.WrongCredentialsException
 import com.bloss.model.User
+import com.bloss.model.UserStatus
 import com.bloss.repository.UserXmlRepository
 import com.bloss.security.JwtTokenProvider
 import org.springframework.security.authentication.AuthenticationManager
@@ -29,7 +33,7 @@ class UserService(
         )
 
         val user = userRepository.findByEmail(loginDto.email)
-        if (!authentication.isAuthenticated || user == null)
+        if (!authentication.isAuthenticated || user == null || user.userStatus != UserStatus.ACTIVE)
             throw WrongCredentialsException("Неверные данные")
 
         return getToken(user)
@@ -62,5 +66,23 @@ class UserService(
 
     fun isUserExists(userId: Long): Boolean {
         return userRepository.existsById(userId)
+    }
+
+    fun findById(userId: Long): User {
+        return userRepository.findById(userId) ?: throw BadRequestException("Пользователь не найден")
+    }
+
+    fun changeRole(roleChangeDto: RoleChangeDto): User {
+        val user = findById(roleChangeDto.userId)
+        user.role = roleChangeDto.newRole
+
+        return userRepository.save(user)
+    }
+
+    fun changeStatus(userStatusChangeDto: UserStatusChangeDto): User {
+        val user = findById(userStatusChangeDto.userId)
+        user.userStatus = userStatusChangeDto.newUserStatus
+
+        return userRepository.save(user)
     }
 }
