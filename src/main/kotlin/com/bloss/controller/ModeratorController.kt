@@ -2,10 +2,8 @@ package com.bloss.controller
 
 import com.bloss.dto.PostStatusChangeDto
 import com.bloss.service.PostService
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.data.domain.Pageable
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
@@ -14,4 +12,8 @@ class ModeratorController(private val postService: PostService) {
     @PutMapping("/postStatus")
     fun changePostStatus(@Valid @RequestBody postStatusChangeDto: PostStatusChangeDto) =
         postService.changeStatus(postStatusChangeDto)
+
+    @GetMapping("/post/{status}")
+    fun getPostsByStatus(@PathVariable status: String, pageable: Pageable) =
+        postService.findAllByStatus(status, pageable)
 }

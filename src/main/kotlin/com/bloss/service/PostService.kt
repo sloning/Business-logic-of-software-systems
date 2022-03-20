@@ -22,6 +22,10 @@ class PostService(
         return postRepository.findAllByStatus(PostStatus.ACTIVE, pageable)
     }
 
+    fun findAllByStatus(status: String, pageable: Pageable): Page<Post> {
+        return postRepository.findAllByStatus(enumValueOf(status), pageable)
+    }
+
     fun findById(postId: Long): Post {
         return postRepository.findByIdOrNull(postId) ?: throw BadRequestException("Объявление не найдено")
     }
