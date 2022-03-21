@@ -1,10 +1,12 @@
 package com.bloss.service
 
+import com.atomikos.icatch.jta.UserTransactionImp
 import com.bloss.dto.LoginDto
 import com.bloss.dto.RegisterDto
 import com.bloss.dto.RoleChangeDto
 import com.bloss.dto.UserStatusChangeDto
 import com.bloss.exception.BadRequestException
+import com.bloss.exception.CommitRolledBackException
 import com.bloss.exception.EntityAlreadyExists
 import com.bloss.exception.WrongCredentialsException
 import com.bloss.model.User
@@ -15,7 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
@@ -39,7 +40,6 @@ class UserService(
         return getToken(user)
     }
 
-    @Transactional
     fun registerUser(registerDto: RegisterDto): Map<String, String> {
         if (userRepository.existsByEmail(registerDto.email)) {
             throw EntityAlreadyExists("Пользователь с таким email адресом уже существует")
@@ -51,7 +51,7 @@ class UserService(
             firstName = registerDto.firstName,
             secondName = registerDto.secondName
         )
-        user = userRepository.save(user)
+        user = save(user)
 
         return getToken(user)
     }
@@ -65,6 +65,22 @@ class UserService(
         return response
     }
 
+    private fun save(user: User): User {
+        val utx = UserTransactionImp()
+        var rollback = false
+        var savedUser: User? = null
+        try {
+            utx.begin()
+            savedUser = userRepository.save(user)
+        } catch (e: Exception) {
+            rollback = true
+        } finally {
+            if (rollback) utx.rollback()
+            else utx.commit()
+        }
+        return savedUser ?: throw CommitRolledBackException("Невозможно выполнить транзакцию")
+    }
+
     fun isUserExists(userId: Long): Boolean {
         return userRepository.existsById(userId)
     }
@@ -73,19 +89,17 @@ class UserService(
         return userRepository.findById(userId) ?: throw BadRequestException("Пользователь не найден")
     }
 
-    @Transactional
     fun changeRole(roleChangeDto: RoleChangeDto): User {
         val user = findById(roleChangeDto.userId)
         user.role = roleChangeDto.newRole
 
-        return userRepository.save(user)
+        return save(user)
     }
 
-    @Transactional
     fun changeStatus(userStatusChangeDto: UserStatusChangeDto): User {
         val user = findById(userStatusChangeDto.userId)
         user.userStatus = userStatusChangeDto.newUserStatus
 
-        return userRepository.save(user)
+        return save(user)
     }
 }
