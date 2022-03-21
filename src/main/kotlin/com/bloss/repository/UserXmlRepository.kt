@@ -2,7 +2,6 @@ package com.bloss.repository
 
 import com.bloss.model.Role
 import com.bloss.model.User
-import org.springframework.beans.factory.annotation.Value
 import java.beans.XMLDecoder
 import java.beans.XMLEncoder
 import java.io.File
@@ -10,8 +9,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 object UserXmlRepository {
-    @Value("\${app.xmlUserRepository}")
-    private val repoPath: String = "./user_repository"
+    private const val repoPath: String = "./user_repository"
     private var lastId: Long = 0
 
     init {

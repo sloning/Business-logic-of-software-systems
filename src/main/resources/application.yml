@@ -10,9 +10,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
 
 app:
-  xmlUserRepository: classpath:/user_repository.xml
   tokenSecret: ${SECURITY_SECRET}
   tokenExpirationMSec: 864000000
   tokenPrefix: "Bearer "

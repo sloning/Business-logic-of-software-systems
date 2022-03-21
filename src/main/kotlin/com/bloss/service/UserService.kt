@@ -15,7 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
@@ -39,6 +39,7 @@ class UserService(
         return getToken(user)
     }
 
+    @Transactional
     fun registerUser(registerDto: RegisterDto): Map<String, String> {
         if (userRepository.existsByEmail(registerDto.email)) {
             throw EntityAlreadyExists("Пользователь с таким email адресом уже существует")
@@ -72,6 +73,7 @@ class UserService(
         return userRepository.findById(userId) ?: throw BadRequestException("Пользователь не найден")
     }
 
+    @Transactional
     fun changeRole(roleChangeDto: RoleChangeDto): User {
         val user = findById(roleChangeDto.userId)
         user.role = roleChangeDto.newRole
@@ -79,6 +81,7 @@ class UserService(
         return userRepository.save(user)
     }
 
+    @Transactional
     fun changeStatus(userStatusChangeDto: UserStatusChangeDto): User {
         val user = findById(userStatusChangeDto.userId)
         user.userStatus = userStatusChangeDto.newUserStatus

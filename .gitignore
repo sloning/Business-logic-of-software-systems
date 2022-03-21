@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 user_repository
 transaction-logs
+tmlog*.log
 
 ### STS ###
 .apt_generated

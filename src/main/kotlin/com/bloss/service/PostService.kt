@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PostService(
@@ -30,12 +31,14 @@ class PostService(
         return postRepository.findByIdOrNull(postId) ?: throw BadRequestException("Объявление не найдено")
     }
 
+    @Transactional
     fun create(post: Post): Post {
         post.userId = authenticationFacade.userId
 
         return validateAndSave(post)
     }
 
+    @Transactional
     fun update(post: Post): Post {
         return validateAndSave(post)
     }
@@ -64,6 +67,7 @@ class PostService(
         postRepository.save(post)
     }
 
+    @Transactional
     fun changeStatus(postStatusChangeDto: PostStatusChangeDto): Post {
         val post = findById(postStatusChangeDto.postId)
         post.status = postStatusChangeDto.newPostStatus
