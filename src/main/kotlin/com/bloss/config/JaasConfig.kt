@@ -15,10 +15,7 @@ import javax.security.auth.login.Configuration as javaxConfiguration
 @Configuration
 class JaasConfig {
     @Bean
-    fun configuration(
-        userDetailsService: UserDetailsService,
-        passwordEncoder: PasswordEncoder
-    ): javaxConfiguration {
+    fun configuration(userDetailsService: UserDetailsService, passwordEncoder: PasswordEncoder): javaxConfiguration {
         val configurationEntries = arrayOf(
             AppConfigurationEntry(
                 UserDetailsLoginModule::class.java.canonicalName,

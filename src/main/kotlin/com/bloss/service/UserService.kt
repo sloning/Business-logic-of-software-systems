@@ -1,6 +1,5 @@
 package com.bloss.service
 
-import com.atomikos.icatch.jta.UserTransactionImp
 import com.bloss.dto.LoginDto
 import com.bloss.dto.RegisterDto
 import com.bloss.dto.RoleChangeDto
@@ -17,14 +16,26 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.TransactionDefinition
+import org.springframework.transaction.support.TransactionTemplate
+import javax.annotation.PostConstruct
 
 @Service
 class UserService(
     private val jwtTokenProvider: JwtTokenProvider,
     private val passwordEncoder: PasswordEncoder,
-    private val authManager: AuthenticationManager
+    private val authManager: AuthenticationManager,
+    private val transactionManager: PlatformTransactionManager
 ) {
     private val userRepository: UserXmlRepository = UserXmlRepository
+    private lateinit var transactionTemplate: TransactionTemplate
+
+    @PostConstruct
+    fun init() {
+        transactionTemplate = TransactionTemplate(transactionManager)
+        transactionTemplate.propagationBehavior = TransactionDefinition.PROPAGATION_REQUIRES_NEW
+    }
 
     fun authenticateUser(loginDto: LoginDto): Map<String, String> {
         val authentication = authManager.authenticate(
@@ -66,17 +77,9 @@ class UserService(
     }
 
     private fun save(user: User): User {
-        val utx = UserTransactionImp()
-        var rollback = false
         var savedUser: User? = null
-        try {
-            utx.begin()
+        transactionTemplate.execute {
             savedUser = userRepository.save(user)
-        } catch (e: Exception) {
-            rollback = true
-        } finally {
-            if (rollback) utx.rollback()
-            else utx.commit()
         }
         return savedUser ?: throw CommitRolledBackException("Невозможно выполнить транзакцию")
     }

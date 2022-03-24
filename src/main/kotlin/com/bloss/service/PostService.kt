@@ -1,6 +1,5 @@
 package com.bloss.service
 
-import com.atomikos.icatch.jta.UserTransactionImp
 import com.bloss.dto.PostStatusChangeDto
 import com.bloss.exception.BadRequestException
 import com.bloss.exception.CommitRolledBackException
@@ -13,16 +12,26 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.TransactionDefinition
+import org.springframework.transaction.support.TransactionTemplate
+import javax.annotation.PostConstruct
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED)
 class PostService(
     private val postRepository: PostRepository,
     private val authenticationFacade: AuthenticationFacade,
-    private val autoModerator: AutoModerator
+    private val autoModerator: AutoModerator,
+    private val transactionManager: PlatformTransactionManager,
 ) {
+    private lateinit var transactionTemplate: TransactionTemplate
+
+    @PostConstruct
+    fun init() {
+        transactionTemplate = TransactionTemplate(transactionManager)
+        transactionTemplate.propagationBehavior = TransactionDefinition.PROPAGATION_REQUIRES_NEW
+    }
+
     fun findAll(pageable: Pageable): Page<Post> {
         return postRepository.findAllByStatus(PostStatus.ACTIVE, pageable)
     }
@@ -54,17 +63,9 @@ class PostService(
     }
 
     private fun save(post: Post): Post {
-        val utx = UserTransactionImp()
-        var rollback = false
         var savedPost: Post? = null
-        try {
-            utx.begin()
+        transactionTemplate.execute {
             savedPost = postRepository.save(post)
-        } catch (e: Exception) {
-            rollback = true
-        } finally {
-            if (rollback) utx.rollback()
-            else utx.commit()
         }
         return savedPost ?: throw CommitRolledBackException("Невозможно выполнить транзакцию")
     }
@@ -77,17 +78,9 @@ class PostService(
     }
 
     fun delete(post: Post) {
-        val utx = UserTransactionImp()
-        var rollback = false
-        try {
-            utx.begin()
+        transactionTemplate.execute {
             post.status = PostStatus.DELETED
             postRepository.save(post)
-        } catch (e: Exception) {
-            rollback = true
-        } finally {
-            if (rollback) utx.rollback()
-            else utx.commit()
         }
     }
 
