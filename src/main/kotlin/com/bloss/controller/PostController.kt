@@ -25,7 +25,7 @@ class PostController(
     @PreAuthorize("@creatorChecker.check(#post)")
     fun update(@Valid @RequestBody post: Post) = postService.update(post)
 
-    @PutMapping
+    @PutMapping("/upgrade")
     @PreAuthorize("@creatorChecker.check(#post)")
     fun upgradePost(@Valid @RequestBody post: Post) = postService.upgradePost(post)
 

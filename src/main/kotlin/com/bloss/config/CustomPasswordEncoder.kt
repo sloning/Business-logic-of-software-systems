@@ -1,4 +1,4 @@
-package com.bloss.security
+package com.bloss.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
