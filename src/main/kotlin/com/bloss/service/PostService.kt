@@ -23,6 +23,7 @@ class PostService(
     private val authenticationFacade: AuthenticationFacade,
     private val autoModerator: AutoModerator,
     private val transactionManager: PlatformTransactionManager,
+    private val paymentService: PaymentService
 ) {
     private lateinit var transactionTemplate: TransactionTemplate
 
@@ -52,6 +53,20 @@ class PostService(
 
     fun update(post: Post): Post {
         return validateAndSave(post)
+    }
+
+    fun upgradePost(post: Post): Post {
+        var savedPost: Post? = null
+        transactionTemplate.execute {
+            if (paymentService.processPayment(authenticationFacade.userId)) {
+                post.isPaid = true
+            } else {
+                throw BadRequestException("Ошибка оплаты")
+            }
+
+            savedPost = update(post)
+        }
+        return savedPost ?: throw BadRequestException("Ошибка выолнения операции")
     }
 
     private fun validateAndSave(post: Post): Post {

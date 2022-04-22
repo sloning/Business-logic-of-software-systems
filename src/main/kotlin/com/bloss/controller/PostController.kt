@@ -25,6 +25,10 @@ class PostController(
     @PreAuthorize("@creatorChecker.check(#post)")
     fun update(@Valid @RequestBody post: Post) = postService.update(post)
 
+    @PutMapping
+    @PreAuthorize("@creatorChecker.check(#post)")
+    fun upgradePost(@Valid @RequestBody post: Post) = postService.upgradePost(post)
+
     @DeleteMapping
     @PreAuthorize("@creatorChecker.check(#post)")
     fun delete(@Valid @RequestBody post: Post) = postService.delete(post)

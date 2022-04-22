@@ -36,7 +36,9 @@ data class Post(
     var userId: Long = -1,
     @Column
     @field:Pattern(regexp = "^((\\+7|7|8)+([0-9]){10})\$", message = "Неверный номер телефона")
-    var phoneNumber: String
+    var phoneNumber: String,
+    @Column
+    var isPaid: Boolean
 )
 
 enum class TypeOfPost { SALE, RENT }
