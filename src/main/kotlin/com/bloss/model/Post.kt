@@ -1,5 +1,6 @@
 package com.bloss.model
 
+import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
@@ -38,7 +39,11 @@ data class Post(
     @field:Pattern(regexp = "^((\\+7|7|8)+([0-9]){10})\$", message = "Неверный номер телефона")
     var phoneNumber: String,
     @Column
-    var isPaid: Boolean
+    var isPaid: Boolean,
+    @Column(nullable = false)
+    var dateAdded: Date = Date(),
+    @Column(nullable = false)
+    var lastWatched: Date = Date()
 )
 
 enum class TypeOfPost { SALE, RENT }

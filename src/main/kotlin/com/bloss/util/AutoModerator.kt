@@ -24,5 +24,5 @@ class AutoModerator {
             .flatMap { it.split(" ") }
             .toSet()
             .intersect(badWords)
-            .isNotEmpty()
+            .isEmpty()
 }

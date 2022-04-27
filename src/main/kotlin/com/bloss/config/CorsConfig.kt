@@ -6,9 +6,10 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
-class CorsConfig(@Value("\${app.cors.allowedOrigins}") private val allowedOrigins: Array<String>) : WebMvcConfigurer {
-    private val maxAgeSecs: Long = 3600
-
+class CorsConfig(
+    @Value("\${app.security.cors.allowedOrigins}") private val allowedOrigins: Array<String>,
+    @Value("\${app.security.cors.maxAge}") private val maxAgeSecs: Long
+) : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
             .allowedOrigins(*allowedOrigins)

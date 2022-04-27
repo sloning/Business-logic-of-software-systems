@@ -18,6 +18,12 @@ class PostController(
     @GetMapping
     fun getAll(pageable: Pageable): Page<Post> = postService.findAll(pageable)
 
+    @GetMapping("/paid")
+    fun getPaid(pageable: Pageable): Page<Post> = postService.findPaid(pageable)
+
+    @GetMapping("/{id}")
+    fun getPostById(@PathVariable id: Long): Post = postService.getPostById(id)
+
     @PostMapping
     fun create(@Valid @RequestBody post: Post) = postService.create(post)
 

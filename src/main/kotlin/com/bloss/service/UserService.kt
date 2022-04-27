@@ -5,7 +5,6 @@ import com.bloss.dto.RegisterDto
 import com.bloss.dto.RoleChangeDto
 import com.bloss.dto.UserStatusChangeDto
 import com.bloss.exception.BadRequestException
-import com.bloss.exception.CommitRolledBackException
 import com.bloss.exception.EntityAlreadyExists
 import com.bloss.exception.WrongCredentialsException
 import com.bloss.model.User
@@ -16,26 +15,14 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.transaction.PlatformTransactionManager
-import org.springframework.transaction.TransactionDefinition
-import org.springframework.transaction.support.TransactionTemplate
-import javax.annotation.PostConstruct
 
 @Service
 class UserService(
     private val jwtTokenProvider: JwtTokenProvider,
     private val passwordEncoder: PasswordEncoder,
     private val authManager: AuthenticationManager,
-    private val transactionManager: PlatformTransactionManager
 ) {
     private val userRepository: UserXmlRepository = UserXmlRepository
-    private lateinit var transactionTemplate: TransactionTemplate
-
-    @PostConstruct
-    fun init() {
-        transactionTemplate = TransactionTemplate(transactionManager)
-        transactionTemplate.propagationBehavior = TransactionDefinition.PROPAGATION_REQUIRES_NEW
-    }
 
     fun authenticateUser(loginDto: LoginDto): Map<String, String> {
         val authentication = authManager.authenticate(
@@ -77,11 +64,7 @@ class UserService(
     }
 
     private fun save(user: User): User {
-        var savedUser: User? = null
-        transactionTemplate.execute {
-            savedUser = userRepository.save(user)
-        }
-        return savedUser ?: throw CommitRolledBackException("Невозможно выполнить транзакцию")
+        return userRepository.save(user)
     }
 
     fun isUserExists(userId: Long): Boolean {

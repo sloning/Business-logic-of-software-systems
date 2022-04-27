@@ -10,12 +10,18 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    database-platform: org.hibernate.dialect.PostgreSQL14Dialect
 
 app:
-  tokenSecret: ${SECURITY_SECRET}
-  tokenExpirationMSec: 864000000
-  tokenPrefix: "Bearer "
-  headerString: "Authorization"
-  cors:
-    allowedOrigins: http://localhost:8080, http://20.67.104.18:8080
+  security:
+    tokenSecret: ${SECURITY_SECRET}
+    tokenExpirationMSec: 864000000
+    tokenPrefix: "Bearer "
+    headerString: "Authorization"
+    cors:
+      allowedOrigins: http://localhost:8080, http://20.67.104.18:8080
+      maxAge: 3600
+  schedule:
+    scheduleToHidePosts: "0 0 2 * * *"
+    millisecondsToHideByCreationDate: 2592000000
+    millisecondsToHideByLastWatchedDate: 604800000
