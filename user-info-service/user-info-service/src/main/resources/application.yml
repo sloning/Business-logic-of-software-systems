@@ -1,0 +1,18 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: "${db_host}/bloss"
+    driver-class-name: org.postgresql.Driver
+    username: ${db_username}
+    password: ${db_password}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+  mail:
+    username: ${email_username}
+    password: ${email_password}
+    host: "smtp.gmail.com"
+    port: 587

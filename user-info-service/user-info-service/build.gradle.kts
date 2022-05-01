@@ -27,14 +27,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.springframework.kafka:spring-kafka")
-    compileOnly("org.projectlombok:lombok")
+    implementation("com.google.code.gson:gson:2.9.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.kafka:spring-kafka-test")
 }
 
 tasks.withType<KotlinCompile> {

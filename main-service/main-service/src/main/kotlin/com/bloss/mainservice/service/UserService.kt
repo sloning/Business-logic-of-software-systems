@@ -9,6 +9,7 @@ import com.bloss.mainservice.exception.EntityAlreadyExists
 import com.bloss.mainservice.exception.WrongCredentialsException
 import com.bloss.mainservice.model.User
 import com.bloss.mainservice.model.UserStatus
+import com.bloss.mainservice.repository.UserRepository
 import com.bloss.mainservice.repository.UserXmlRepository
 import com.bloss.mainservice.security.JwtTokenProvider
 import org.springframework.security.authentication.AuthenticationManager
@@ -21,6 +22,7 @@ class UserService(
     private val jwtTokenProvider: JwtTokenProvider,
     private val passwordEncoder: PasswordEncoder,
     private val authManager: AuthenticationManager,
+    private val userDbRepository: UserRepository
 ) {
     private val userRepository: UserXmlRepository = UserXmlRepository
 
@@ -64,6 +66,7 @@ class UserService(
     }
 
     private fun save(user: User): User {
+        userDbRepository.save(user)
         return userRepository.save(user)
     }
 
