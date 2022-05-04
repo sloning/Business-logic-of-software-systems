@@ -3,10 +3,8 @@ package com.bloss.mainservice.controller
 import com.bloss.mainservice.dto.LoginDto
 import com.bloss.mainservice.dto.RegisterDto
 import com.bloss.mainservice.service.UserService
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
@@ -17,4 +15,10 @@ class UserController(private val userService: UserService) {
 
     @PostMapping("/register")
     fun register(@Valid @RequestBody registerDto: RegisterDto) = userService.registerUser(registerDto)
+
+    @GetMapping("/data")
+    fun requestUserData(): ResponseEntity<String> {
+        userService.requestUserData()
+        return ResponseEntity.ok("We will send you an email with your data")
+    }
 }

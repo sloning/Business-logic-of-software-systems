@@ -29,6 +29,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-security:1.6.6")
     implementation("org.springdoc:springdoc-openapi-kotlin:1.6.6")
     implementation("org.postgresql:postgresql")
+    implementation("org.springframework.kafka:spring-kafka:2.8.5")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

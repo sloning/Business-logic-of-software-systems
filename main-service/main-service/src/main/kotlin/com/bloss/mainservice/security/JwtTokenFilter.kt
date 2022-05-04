@@ -2,7 +2,7 @@ package com.bloss.mainservice.security
 
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
-import org.springframework.security.core.context.SecurityContextHolder.getContext
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
 import javax.servlet.FilterChain
 import javax.servlet.ServletRequest
@@ -17,7 +17,7 @@ class JwtTokenFilter(private val jwtTokenProvider: JwtTokenProvider) : GenericFi
 
             if (jwtTokenProvider.verifyToken(token)) {
                 val authentication: Authentication = jwtTokenProvider.getAuthentication(token)
-                getContext().authentication = authentication
+                SecurityContextHolder.getContext().authentication = authentication
             }
             chain.doFilter(request, response)
         } catch (e: AuthenticationException) {

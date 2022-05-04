@@ -10,7 +10,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQL14Dialect
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+  kafka:
+    bootstrap-servers: "::1:9092"
+    template:
+      default-topic: "user-data-request"
 
 app:
   security:

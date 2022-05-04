@@ -31,8 +31,6 @@ class SecurityConfig(
     override fun configure(webSecurity: WebSecurity) {
         webSecurity
             .ignoring()
-            .antMatchers(HttpMethod.GET, "/api/*/post")
-            .antMatchers("/api/*/user/**")
             .antMatchers("/swagger-ui/**", "/v3/api-docs/**")
     }
 
@@ -54,7 +52,10 @@ class SecurityConfig(
             .authorizeRequests()
             .antMatchers("/api/*/admin/**").hasRole("ADMIN")
             .antMatchers("/api/*/moderator/**").hasAnyRole("ADMIN", "MODERATOR")
-            .anyRequest().authenticated()
+            .antMatchers("/api/*/user/data").authenticated()
+            .antMatchers("/api/*/post").authenticated()
+            .antMatchers(HttpMethod.GET, "/api/*/post").permitAll()
+            .anyRequest().permitAll()
             .and()
             .addFilterBefore(JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
     }

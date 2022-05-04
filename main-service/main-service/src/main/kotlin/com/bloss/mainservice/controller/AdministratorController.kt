@@ -15,7 +15,7 @@ class AdministratorController(private val userService: UserService) {
     @PutMapping("/role")
     fun changeRole(@Valid @RequestBody roleChangeDto: RoleChangeDto) = userService.changeRole(roleChangeDto)
 
-    @PutMapping("/userStatus")
+    @PutMapping("/user-status")
     fun changeUserStatus(@Valid @RequestBody userStatusChangeDto: UserStatusChangeDto) =
         userService.changeStatus(userStatusChangeDto)
 }

@@ -11,7 +11,9 @@ import com.bloss.mainservice.model.User
 import com.bloss.mainservice.model.UserStatus
 import com.bloss.mainservice.repository.UserRepository
 import com.bloss.mainservice.repository.UserXmlRepository
+import com.bloss.mainservice.security.AuthenticationFacade
 import com.bloss.mainservice.security.JwtTokenProvider
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -22,7 +24,9 @@ class UserService(
     private val jwtTokenProvider: JwtTokenProvider,
     private val passwordEncoder: PasswordEncoder,
     private val authManager: AuthenticationManager,
-    private val userDbRepository: UserRepository
+    private val userDbRepository: UserRepository,
+    private val kafkaTemplate: KafkaTemplate<String, String>,
+    private val authenticationFacade: AuthenticationFacade
 ) {
     private val userRepository: UserXmlRepository = UserXmlRepository
 
@@ -90,5 +94,10 @@ class UserService(
         user.userStatus = userStatusChangeDto.newUserStatus
 
         return save(user)
+    }
+
+    fun requestUserData() {
+        val userId = authenticationFacade.userId
+        kafkaTemplate.send(kafkaTemplate.defaultTopic, userId.toString())
     }
 }

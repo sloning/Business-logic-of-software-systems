@@ -9,7 +9,7 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/api/v1/moderator")
 class ModeratorController(private val postService: PostService) {
-    @PutMapping("/postStatus")
+    @PutMapping("/post-status")
     fun changePostStatus(@Valid @RequestBody postStatusChangeDto: PostStatusChangeDto) =
         postService.changeStatus(postStatusChangeDto)
 
