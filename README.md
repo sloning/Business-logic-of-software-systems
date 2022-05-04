@@ -11,7 +11,6 @@
 * Kotlin
 * Spring Boot
 * Spring Security
-* JAAS
 * Sprint Data Jpa
 * Atomikos
 * Apache Kafka
@@ -27,7 +26,7 @@ TODO
 ## Сборка и запуск
 
 Необходимо указать следующие системные переменные:
-db_host, db_username, db_password, SECURITY_SECRET.
+db_host, db_username, db_password, SECURITY_SECRET, email_username, email_password.
 
 Сборка и запуск приложения:
 
