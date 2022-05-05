@@ -20,3 +20,5 @@ spring:
     bootstrap-servers: "::1:9092"
     template:
       default-topic: "user-data-request"
+    consumer:
+      group-id: "user-info-service-1"
