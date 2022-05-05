@@ -16,7 +16,3 @@ spring:
     password: ${email_password}
     host: "smtp.gmail.com"
     port: 587
-  kafka:
-    bootstrap-servers: "::1:9092"
-    template:
-      default-topic: "user-data-request"
