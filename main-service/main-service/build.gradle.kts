@@ -32,7 +32,7 @@ dependencies {
     implementation("org.springframework:spring-jms:5.3.19")
     implementation("com.rabbitmq:amqp-client:5.14.2")
     implementation("com.rabbitmq.jms:rabbitmq-jms:2.4.0")
-//    implementation("org.springframework.boot:spring-boot-starter-amqp:2.6.7")
+    implementation("org.springframework.boot:spring-boot-starter-quartz:2.6.7")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

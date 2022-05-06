@@ -10,7 +10,6 @@ import com.bloss.mainservice.util.AutoModerator
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.TransactionDefinition
@@ -25,7 +24,6 @@ class PostService(
     private val autoModerator: AutoModerator,
     private val transactionManager: PlatformTransactionManager,
     private val paymentService: PaymentService,
-    private val appProperties: com.bloss.mainservice.config.AppProperties
 ) {
     private lateinit var transactionTemplate: TransactionTemplate
 
@@ -120,7 +118,7 @@ class PostService(
         if (!paymentService.processPayment(userId)) throw BadRequestException("Ошибка оплаты")
     }
 
-    private fun save(post: Post): Post {
+    fun save(post: Post): Post {
         return postRepository.save(post)
     }
 
@@ -133,34 +131,5 @@ class PostService(
         val post = findById(postStatusChangeDto.postId)
         post.status = postStatusChangeDto.newPostStatus
         return save(post)
-    }
-
-    @Scheduled(
-        cron = "#{@'app-com.bloss.mainservice.config.AppProperties'.schedule.scheduleToHidePosts}",
-        zone = "Europe/Moscow"
-    )
-    private fun hideOldPosts() {
-        hidePostsByCreationDate()
-        hidePostsByLastWatchedDate()
-    }
-
-    private fun hidePostsByCreationDate() {
-        val timeToHide = appProperties.schedule.millisecondsToHideByCreationDate
-        val dateOfPostCreation = Date(Date().time - timeToHide)
-        val posts = findAllByDateAddedBefore(dateOfPostCreation)
-        posts.forEach {
-            it.status = PostStatus.HIDDEN
-            save(it)
-        }
-    }
-
-    private fun hidePostsByLastWatchedDate() {
-        val timeToHide = appProperties.schedule.millisecondsToHideByLastWatchedDate
-        val dateOfPostLastWatch = Date(Date().time - timeToHide)
-        val posts = findAllByLastWatchedDateBefore(dateOfPostLastWatch)
-        posts.forEach {
-            it.status = PostStatus.HIDDEN
-            save(it)
-        }
     }
 }

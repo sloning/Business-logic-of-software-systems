@@ -22,7 +22,6 @@ class MessageService(
             val textMessage: TextMessage
             if (message != null) {
                 textMessage = message as TextMessage
-                println(textMessage.text)
                 archiveService.makeArchive(textMessage.text.toLong())
             }
         }
