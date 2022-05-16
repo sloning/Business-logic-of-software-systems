@@ -13,7 +13,7 @@ import com.bloss.mainservice.repository.UserRepository
 import com.bloss.mainservice.repository.UserXmlRepository
 import com.bloss.mainservice.security.AuthenticationFacade
 import com.bloss.mainservice.security.JwtTokenProvider
-import org.springframework.jms.core.JmsTemplate
+import com.bloss.mainservice.util.UserDataProducer
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -26,7 +26,7 @@ class UserService(
     private val authManager: AuthenticationManager,
     private val userDbRepository: UserRepository,
     private val authenticationFacade: AuthenticationFacade,
-    private val jmsTemplate: JmsTemplate
+    private val userDataProducer: UserDataProducer
 ) {
     private val userRepository: UserXmlRepository = UserXmlRepository
 
@@ -98,10 +98,6 @@ class UserService(
 
     fun requestUserData() {
         val userId = authenticationFacade.userId
-        jmsTemplate.send {
-            val message = it.createTextMessage(userId.toString())
-            message.jmsType = "TextMessage"
-            message
-        }
+        userDataProducer.sendUserDataRequest(userId.toString())
     }
 }

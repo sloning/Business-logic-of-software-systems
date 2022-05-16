@@ -9,7 +9,6 @@ import javax.mail.Message
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-
 @Component
 class EmailUtil(
     private val sender: JavaMailSender

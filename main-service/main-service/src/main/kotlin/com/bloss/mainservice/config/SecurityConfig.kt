@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
     private val jwtTokenProvider: JwtTokenProvider,
     private val jaasAuthenticationProvider: AbstractJaasAuthenticationProvider,
@@ -52,7 +52,7 @@ class SecurityConfig(
             .authorizeRequests()
             .antMatchers("/api/*/admin/**").hasRole("ADMIN")
             .antMatchers("/api/*/moderator/**").hasAnyRole("ADMIN", "MODERATOR")
-            .antMatchers("/api/*/user/data").authenticated()
+            .antMatchers(HttpMethod.GET, "/api/*/user/data").authenticated()
             .antMatchers("/api/*/post").authenticated()
             .antMatchers(HttpMethod.GET, "/api/*/post").permitAll()
             .anyRequest().permitAll()

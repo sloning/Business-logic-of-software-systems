@@ -29,8 +29,6 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-security:1.6.6")
     implementation("org.springdoc:springdoc-openapi-kotlin:1.6.6")
     implementation("org.postgresql:postgresql")
-    implementation("org.springframework:spring-jms:5.3.19")
-    implementation("com.rabbitmq:amqp-client:5.14.2")
     implementation("com.rabbitmq.jms:rabbitmq-jms:2.4.0")
     implementation("org.springframework.boot:spring-boot-starter-quartz:2.6.7")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

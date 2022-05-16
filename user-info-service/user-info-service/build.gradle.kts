@@ -8,15 +8,8 @@ plugins {
     kotlin("plugin.jpa") version "1.6.21"
 }
 
-group = "com.bloss"
-version = "0.0.1-SNAPSHOT"
+group = "com.bloss.userinfoservice"
 java.sourceCompatibility = JavaVersion.VERSION_11
-
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
 
 repositories {
     mavenCentral()
@@ -28,8 +21,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("com.google.code.gson:gson:2.9.0")
-    implementation("org.springframework:spring-jms:5.3.19")
-    implementation("com.rabbitmq:amqp-client:5.14.2")
     implementation("com.rabbitmq.jms:rabbitmq-jms:2.4.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
