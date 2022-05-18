@@ -18,9 +18,9 @@ services:
       timeout: 10s
       retries: 2
 
-  bloss:
-    container_name: bloss
-    build: .
+  bloss_main_service:
+    container_name: bloss_main_service
+    build: main-service/main-service
     restart: always
     ports:
       - "8080:8080"
@@ -33,6 +33,23 @@ services:
       db_username: postgres
       db_password: $db_password
       SECURITY_SECRET: $SECURITY_SECRET
+
+  bloss_user_info_service:
+    container_name: bloss_user_info_service
+    build: user-info-service/user-info-service
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - bloss_postgres
+    links:
+      - bloss_postgres
+    environment:
+      db_host: jdbc:postgresql://bloss_postgres:5432
+      db_username: postgres
+      db_password: $db_password
+      email_username: $email_username
+      email_password: $email_password
 
 volumes:
   postgres_data:
