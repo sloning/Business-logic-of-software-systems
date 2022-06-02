@@ -33,6 +33,10 @@ class PostService(
         transactionTemplate.propagationBehavior = TransactionDefinition.PROPAGATION_REQUIRES_NEW
     }
 
+    fun findAll(): List<Post> {
+        return postRepository.findAllByStatus(PostStatus.ACTIVE)
+    }
+
     fun findAll(pageable: Pageable): Page<Post> {
         return postRepository.findAllByStatus(PostStatus.ACTIVE, pageable)
     }

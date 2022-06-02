@@ -10,6 +10,8 @@ import java.util.*
 
 @Repository
 interface PostRepository : PagingAndSortingRepository<Post, Long> {
+    fun findAllByStatus(status: PostStatus): List<Post>
+
     fun findAllByStatus(status: PostStatus, pageable: Pageable): Page<Post>
 
     fun findAllByIsPaidTrue(pageable: Pageable): Page<Post>
