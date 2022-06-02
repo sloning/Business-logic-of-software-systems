@@ -5,7 +5,6 @@ import com.bloss.mainservice.security.JwtTokenFilter
 import com.bloss.mainservice.security.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.authentication.jaas.AbstractJaasAuthenticationProvider
@@ -31,7 +30,14 @@ class SecurityConfig(
     override fun configure(webSecurity: WebSecurity) {
         webSecurity
             .ignoring()
-            .antMatchers("/swagger-ui/**", "/v3/api-docs/**")
+            .antMatchers(
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/*",
+                "/camunda/**",
+                "/api/v1/user/register",
+                "/api/v1/user/login"
+            )
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
@@ -50,11 +56,11 @@ class SecurityConfig(
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/api/*/admin/**").hasRole("ADMIN")
-            .antMatchers("/api/*/moderator/**").hasAnyRole("ADMIN", "MODERATOR")
-            .antMatchers(HttpMethod.GET, "/api/*/user/data").authenticated()
-            .antMatchers("/api/*/post").authenticated()
-            .antMatchers(HttpMethod.GET, "/api/*/post").permitAll()
+//            .antMatchers("/api/*/admin/**").hasRole("ADMIN")
+//            .antMatchers("/api/*/moderator/**").hasAnyRole("ADMIN", "MODERATOR")
+//            .antMatchers(HttpMethod.GET, "/api/*/user/data").authenticated()
+//            .antMatchers("/api/*/post").authenticated()
+//            .antMatchers(HttpMethod.GET, "/api/*/post").permitAll()
             .anyRequest().permitAll()
             .and()
             .addFilterBefore(JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)

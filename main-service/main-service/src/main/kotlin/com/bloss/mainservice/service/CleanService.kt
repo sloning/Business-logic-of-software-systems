@@ -1,23 +1,15 @@
 package com.bloss.mainservice.service
 
-import com.bloss.mainservice.config.AppProperties
 import com.bloss.mainservice.model.PostStatus
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class CleanService(
-    private val postService: PostService,
-    private val appProperties: AppProperties
+    private val postService: PostService
 ) {
-
-    fun hideOldPosts() {
-        hidePostsByCreationDate()
-        hidePostsByLastWatchedDate()
-    }
-
-    private fun hidePostsByCreationDate() {
-        val timeToHide = appProperties.schedule.millisecondsToHideByCreationDate
+    fun hidePostsByCreationDate(timeToHide: Long) {
+        println("called 1 $timeToHide")
         val dateOfPostCreation = Date(Date().time - timeToHide)
         val posts = postService.findAllByDateAddedBefore(dateOfPostCreation)
         posts.forEach {
@@ -26,8 +18,8 @@ class CleanService(
         }
     }
 
-    private fun hidePostsByLastWatchedDate() {
-        val timeToHide = appProperties.schedule.millisecondsToHideByLastWatchedDate
+    fun hidePostsByLastWatchedDate(timeToHide: Long) {
+        println("called 2 $timeToHide")
         val dateOfPostLastWatch = Date(Date().time - timeToHide)
         val posts = postService.findAllByLastWatchedDateBefore(dateOfPostLastWatch)
         posts.forEach {

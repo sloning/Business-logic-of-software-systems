@@ -19,7 +19,6 @@ class UserDataProducer {
         val factory = RMQConnectionFactory()
         factory.username = "guest"
         factory.password = "guest"
-        factory.virtualHost = "/"
         factory.host = "[::1]"
         factory.port = 5672
         return factory

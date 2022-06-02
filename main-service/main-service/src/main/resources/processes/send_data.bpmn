@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_0dvqtgh" targetNamespace="http://bpmn.io/schema/bpmn"
+                  exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="9.1.0">
+  <bpmn:collaboration id="Collaboration_1ejr1rk">
+    <bpmn:participant id="Participant_110k6de" processRef="Process_0d3k107"/>
+  </bpmn:collaboration>
+  <bpmn:process id="Process_0d3k107" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_0uj22yi" name="Выгрузить данные на почту">
+      <bpmn:outgoing>Flow_0fdhwbv</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_1yf9bdj" name="Отправка данных пользователя на почту">
+      <bpmn:incoming>Flow_0fdhwbv</bpmn:incoming>
+      <bpmn:outgoing>Flow_09h817e</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1wztx5l" name="Данные отправлены на почту">
+      <bpmn:incoming>Flow_09h817e</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0fdhwbv" sourceRef="StartEvent_0uj22yi" targetRef="Activity_1yf9bdj"/>
+    <bpmn:sequenceFlow id="Flow_09h817e" sourceRef="Activity_1yf9bdj" targetRef="Event_1wztx5l"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1ejr1rk">
+      <bpmndi:BPMNShape id="Participant_110k6de_di" bpmnElement="Participant_110k6de" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="520" height="250"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0fdhwbv_di" bpmnElement="Flow_0fdhwbv">
+        <di:waypoint x="282" y="189"/>
+        <di:waypoint x="370" y="189"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09h817e_di" bpmnElement="Flow_09h817e">
+        <di:waypoint x="470" y="189"/>
+        <di:waypoint x="572" y="189"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_0uj22yi">
+        <dc:Bounds x="246" y="171" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="221" y="214" width="86" height="27"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0vekjjw_di" bpmnElement="Activity_1yf9bdj">
+        <dc:Bounds x="370" y="149" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1wztx5l_di" bpmnElement="Event_1wztx5l">
+        <dc:Bounds x="572" y="171" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="552" y="214" width="77" height="40"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -11,8 +11,6 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
-  quartz:
-    job-store-type: memory
 
 app:
   security:
@@ -23,7 +21,12 @@ app:
     cors:
       allowedOrigins: http://localhost:8080, http://20.67.104.18:8080
       maxAge: 3600
-  schedule:
-    scheduleToHidePosts: "0 0 02am * * ?"
-    millisecondsToHideByCreationDate: 2592000000
-    millisecondsToHideByLastWatchedDate: 604800000
+
+camunda:
+  bpm:
+    admin-user:
+      password: admin
+      id: admin
+      first-name: Admin
+      last-name: Admin
+      email: admin@admin.com

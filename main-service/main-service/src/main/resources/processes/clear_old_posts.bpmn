@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1ldsyc6"
+                  targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
+    <bpmn:collaboration id="Collaboration_1ougwci">
+        <bpmn:participant id="Participant_0r9flj8" name="Чистка объявлений" processRef="Process_1mtr8aq"/>
+    </bpmn:collaboration>
+    <bpmn:process id="Process_1mtr8aq" name="Post cleaning" isExecutable="true">
+        <bpmn:startEvent id="StartEvent_1bassq6" name="2 AM&#10;Каждый день">
+            <bpmn:outgoing>Flow_0dx1o8s</bpmn:outgoing>
+            <bpmn:timerEventDefinition id="TimerEventDefinition_1jkcj8l">
+                <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">0 0 02am * * ?</bpmn:timeCycle>
+            </bpmn:timerEventDefinition>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="Event_0v5yoe0" name="Объявления почищены">
+            <bpmn:incoming>Flow_07q6kdz</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="Flow_07q6kdz" sourceRef="Activity_17mpl55" targetRef="Event_0v5yoe0"/>
+        <bpmn:sequenceFlow id="Flow_0sb16q9" sourceRef="Activity_1fys81p" targetRef="Activity_17mpl55"/>
+        <bpmn:sequenceFlow id="Flow_0dx1o8s" sourceRef="StartEvent_1bassq6" targetRef="Activity_1fys81p"/>
+        <bpmn:serviceTask id="Activity_1fys81p" name="Скрыть объявления, которые размещены слишком давно"
+                          camunda:delegateExpression="${cleanByCreationDateDelegate}">
+            <bpmn:extensionElements>
+                <camunda:field name="timeToHideByCreationDate">
+                    <camunda:string>2592000000</camunda:string>
+                </camunda:field>
+            </bpmn:extensionElements>
+            <bpmn:incoming>Flow_0dx1o8s</bpmn:incoming>
+            <bpmn:outgoing>Flow_0sb16q9</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:serviceTask id="Activity_17mpl55" name="Скрыть объявления, которые не просматривались слишком давно"
+                          camunda:delegateExpression="${cleanByLastWatchedDateDelegate}">
+            <bpmn:extensionElements>
+                <camunda:field name="timeToHideByLastWatchedDate">
+                    <camunda:string>604800000</camunda:string>
+                </camunda:field>
+            </bpmn:extensionElements>
+            <bpmn:incoming>Flow_0sb16q9</bpmn:incoming>
+            <bpmn:outgoing>Flow_07q6kdz</bpmn:outgoing>
+        </bpmn:serviceTask>
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1ougwci">
+            <bpmndi:BPMNShape id="Participant_0r9flj8_di" bpmnElement="Participant_0r9flj8" isHorizontal="true">
+                <dc:Bounds x="152" y="80" width="630" height="250"/>
+                <bpmndi:BPMNLabel/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="Flow_0dx1o8s_di" bpmnElement="Flow_0dx1o8s">
+                <di:waypoint x="242" y="189"/>
+                <di:waypoint x="340" y="189"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0sb16q9_di" bpmnElement="Flow_0sb16q9">
+                <di:waypoint x="440" y="189"/>
+                <di:waypoint x="530" y="189"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_07q6kdz_di" bpmnElement="Flow_07q6kdz">
+                <di:waypoint x="630" y="189"/>
+                <di:waypoint x="722" y="189"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="Event_11cph56_di" bpmnElement="StartEvent_1bassq6">
+                <dc:Bounds x="206" y="171" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="190" y="214" width="69" height="27"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_0v5yoe0_di" bpmnElement="Event_0v5yoe0">
+                <dc:Bounds x="722" y="171" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="708" y="214" width="65" height="27"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_1jrer0b_di" bpmnElement="Activity_1fys81p">
+                <dc:Bounds x="340" y="149" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_162a625_di" bpmnElement="Activity_17mpl55">
+                <dc:Bounds x="530" y="149" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

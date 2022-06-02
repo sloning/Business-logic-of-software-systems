@@ -20,7 +20,6 @@ class UserConsumer(private val userMessageListener: UserMessageListener) {
         val factory = RMQConnectionFactory()
         factory.username = "guest"
         factory.password = "guest"
-        factory.virtualHost = "/"
         factory.host = "[::1]"
         factory.port = 5672
         factory.onMessageTimeoutMs = 10000
