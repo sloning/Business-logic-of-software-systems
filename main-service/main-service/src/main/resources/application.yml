@@ -21,6 +21,11 @@ app:
     cors:
       allowedOrigins: http://localhost:8080, http://20.67.104.18:8080
       maxAge: 3600
+  rmq:
+    host: ${rmq_host}
+    port: ${rmq_port}
+    username: ${rmq_username}
+    password: ${rmq_password}
 
 camunda:
   bpm:

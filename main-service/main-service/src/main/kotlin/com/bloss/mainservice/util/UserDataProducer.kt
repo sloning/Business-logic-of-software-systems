@@ -7,7 +7,7 @@ import javax.jms.MessageProducer
 import javax.jms.Session
 
 @Component
-class UserDataProducer {
+class UserDataProducer(private val appProperties: com.bloss.mainservice.config.AppProperties) {
     private val queueName = "defaultQueue"
     private lateinit var factory: ConnectionFactory
 
@@ -17,10 +17,10 @@ class UserDataProducer {
 
     private fun initFactory(): ConnectionFactory {
         val factory = RMQConnectionFactory()
-        factory.username = "guest"
-        factory.password = "guest"
-        factory.host = "[::1]"
-        factory.port = 5672
+        factory.username = appProperties.rmq.rmqUsername
+        factory.password = appProperties.rmq.rmqPassword
+        factory.host = appProperties.rmq.rmqHost
+        factory.port = appProperties.rmq.rmqPort
         return factory
     }
 

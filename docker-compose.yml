@@ -18,6 +18,16 @@ services:
       timeout: 10s
       retries: 2
 
+  bloss_rabbbitmq:
+    container_name: bloss_rabbitmq
+    image: bitnami/rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_USERNAME: rabbitmq
+      RABBITMQ_PASSWORD: $rmq_password
+    volumes:
+      - rabbitmq_data:/bitnami
+
   bloss_main_service:
     container_name: bloss_main_service
     build: main-service/main-service
@@ -26,12 +36,15 @@ services:
       - "8080:8080"
     depends_on:
       - bloss_postgres
-    links:
-      - bloss_postgres
+      - bloss_rabbbitmq
     environment:
       db_host: jdbc:postgresql://bloss_postgres:5432
       db_username: postgres
       db_password: $db_password
+      rmq_host: bloss_rabbbitmq
+      rmq_port: 5672
+      rmq_username: rabbitmq
+      rmq_password: $rmq_password
       SECURITY_SECRET: $SECURITY_SECRET
 
   bloss_user_info_service:
@@ -42,15 +55,20 @@ services:
       - "8081:8081"
     depends_on:
       - bloss_postgres
-    links:
-      - bloss_postgres
+      - bloss_rabbbitmq
     environment:
       db_host: jdbc:postgresql://bloss_postgres:5432
       db_username: postgres
       db_password: $db_password
+      rmq_host: bloss_rabbbitmq
+      rmq_port: 5672
+      rmq_username: rabbitmq
+      rmq_password: $rmq_password
       email_username: $email_username
       email_password: $email_password
 
 volumes:
   postgres_data:
+    driver: local
+  rabbitmq_data:
     driver: local

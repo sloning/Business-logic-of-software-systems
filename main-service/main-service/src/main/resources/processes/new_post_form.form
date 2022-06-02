@@ -1,0 +1,110 @@
+{
+  "components": [
+    {
+      "label": "Name",
+      "type": "textfield",
+      "id": "Field_17ejxtr",
+      "key": "postName",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Description",
+      "type": "textfield",
+      "id": "Field_1xinm4e",
+      "key": "postDescription",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Address",
+      "type": "textfield",
+      "id": "Field_1pe79vw",
+      "key": "postAddress",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Price",
+      "type": "number",
+      "id": "Field_0925esb",
+      "key": "postPrice",
+      "validate": {
+        "min": 1,
+        "required": true
+      }
+    },
+    {
+      "values": [
+        {
+          "label": "For sale",
+          "value": "SALE"
+        },
+        {
+          "label": "For rent",
+          "value": "RENT"
+        }
+      ],
+      "label": "Type of Post",
+      "type": "select",
+      "id": "Field_0u0xm4e",
+      "key": "typeOfPost",
+      "properties": {},
+      "defaultValue": "SALE",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "values": [
+        {
+          "label": "Land",
+          "value": "LAND"
+        },
+        {
+          "label": "House",
+          "value": "HOUSE"
+        },
+        {
+          "label": "Flat",
+          "value": "FLAT"
+        },
+        {
+          "label": "Room",
+          "value": "ROOM"
+        }
+      ],
+      "label": "Type of Estate",
+      "type": "select",
+      "id": "Field_1ptgkim",
+      "key": "typeOfEstate",
+      "defaultValue": "FLAT",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Phone Number",
+      "type": "textfield",
+      "id": "Field_19vze22",
+      "key": "postPhoneNumber",
+      "validate": {
+        "required": true,
+        "regularExpressionPattern": "^((\\+7|7|8)+([0-9]){10})$"
+      },
+      "disabled": false
+    }
+  ],
+  "type": "default",
+  "id": "newPostForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0",
+  "schemaVersion": 4
+}
