@@ -7,11 +7,13 @@ import org.camunda.bpm.engine.delegate.JavaDelegate
 import org.springframework.stereotype.Component
 
 @Component("upgradePostDelegate")
-class UpgradePostDelegate(private val postService: PostService) : JavaDelegate {
+class UpgradePostDelegate(
+    private val postService: PostService,
+) : JavaDelegate {
     override fun execute(execution: DelegateExecution) {
         val postId = execution.getVariable("postId") as Long
         try {
-            postService.upgradePost(postId)
+            postService.makePostPaid(postId)
             execution.setVariable("status", true)
         } catch (e: BadRequestException) {
             execution.setVariable("status", false)

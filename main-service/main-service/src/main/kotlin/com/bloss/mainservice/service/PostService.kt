@@ -104,6 +104,15 @@ class PostService(
         return save(post)
     }
 
+    fun makePostPaid(postId: Long): Post {
+        var dbPost: Post = findById(postId)
+
+        dbPost.isPaid = true
+        dbPost = save(dbPost)
+
+        return dbPost
+    }
+
     fun upgradePost(postId: Long): Post {
         var dbPost: Post = findById(postId)
 
