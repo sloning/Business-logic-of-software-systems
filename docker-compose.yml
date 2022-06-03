@@ -38,7 +38,7 @@ services:
       - bloss_postgres
       - bloss_rabbbitmq
     environment:
-      db_host: jdbc:postgresql://bloss_postgres:5432
+      db_host: jdbc:postgresql://bloss_postgres:5432/bloss
       db_username: postgres
       db_password: $db_password
       rmq_host: bloss_rabbbitmq
@@ -57,7 +57,7 @@ services:
       - bloss_postgres
       - bloss_rabbbitmq
     environment:
-      db_host: jdbc:postgresql://bloss_postgres:5432
+      db_host: jdbc:postgresql://bloss_postgres:5432/bloss
       db_username: postgres
       db_password: $db_password
       rmq_host: bloss_rabbbitmq
