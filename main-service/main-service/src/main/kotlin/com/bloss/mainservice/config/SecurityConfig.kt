@@ -1,12 +1,8 @@
 package com.bloss.mainservice.config
 
-import com.bloss.mainservice.security.CustomUserDetailsService
-import com.bloss.mainservice.security.JwtTokenFilter
-import com.bloss.mainservice.security.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.authentication.jaas.AbstractJaasAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -16,16 +12,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
-    private val jwtTokenProvider: JwtTokenProvider,
     private val jaasAuthenticationProvider: AbstractJaasAuthenticationProvider,
     private val passwordEncoder: PasswordEncoder,
-    private val userDetailsService: CustomUserDetailsService
 ) : WebSecurityConfigurerAdapter() {
     override fun configure(webSecurity: WebSecurity) {
         webSecurity
@@ -63,7 +56,7 @@ class SecurityConfig(
 //            .antMatchers(HttpMethod.GET, "/api/*/post").permitAll()
             .anyRequest().permitAll()
             .and()
-            .addFilterBefore(JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
+//            .addFilterBefore(JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
     }
 
     @Bean
@@ -71,11 +64,11 @@ class SecurityConfig(
         return super.authenticationManager()
     }
 
-    @Bean
-    fun authenticationProvider(): DaoAuthenticationProvider {
-        val authProvider = DaoAuthenticationProvider()
-        authProvider.setUserDetailsService(userDetailsService)
-        authProvider.setPasswordEncoder(passwordEncoder)
-        return authProvider
-    }
+//    @Bean
+//    fun authenticationProvider(): DaoAuthenticationProvider {
+//        val authProvider = DaoAuthenticationProvider()
+//        authProvider.setUserDetailsService(userDetailsService)
+//        authProvider.setPasswordEncoder(passwordEncoder)
+//        return authProvider
+//    }
 }

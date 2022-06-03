@@ -104,8 +104,8 @@ class PostService(
         return save(post)
     }
 
-    fun upgradePost(post: Post): Post {
-        var dbPost: Post = findById(post.id)
+    fun upgradePost(postId: Long): Post {
+        var dbPost: Post = findById(postId)
 
         transactionTemplate.execute {
             processPayment()
@@ -114,6 +114,10 @@ class PostService(
         }
 
         return dbPost
+    }
+
+    fun upgradePost(post: Post): Post {
+        return upgradePost(post.id)
     }
 
     private fun processPayment() {

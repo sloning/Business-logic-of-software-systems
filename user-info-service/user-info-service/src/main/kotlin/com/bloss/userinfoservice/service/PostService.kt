@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class PostService(
     private val postRepository: PostRepository,
 ) {
-    fun findAllByUserId(userId: Long): List<Post> {
+    fun findAllByUserId(userId: String): List<Post> {
         return postRepository.findAllByUserId(userId)
     }
 }

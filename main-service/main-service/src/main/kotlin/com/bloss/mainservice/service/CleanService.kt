@@ -9,7 +9,6 @@ class CleanService(
     private val postService: PostService
 ) {
     fun hidePostsByCreationDate(timeToHide: Long) {
-        println("called 1 $timeToHide")
         val dateOfPostCreation = Date(Date().time - timeToHide)
         val posts = postService.findAllByDateAddedBefore(dateOfPostCreation)
         posts.forEach {
@@ -19,7 +18,6 @@ class CleanService(
     }
 
     fun hidePostsByLastWatchedDate(timeToHide: Long) {
-        println("called 2 $timeToHide")
         val dateOfPostLastWatch = Date(Date().time - timeToHide)
         val posts = postService.findAllByLastWatchedDateBefore(dateOfPostLastWatch)
         posts.forEach {

@@ -19,7 +19,7 @@ spring:
 
 app:
   rmq:
-    host: ${rmq_host}
-    port: ${rmq_port}
-    username: ${rmq_username}
-    password: ${rmq_password}
+    host: "[::1]"
+    port: 5672
+    username: "guest"
+    password: "guest"

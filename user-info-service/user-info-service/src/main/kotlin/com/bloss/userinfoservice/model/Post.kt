@@ -17,24 +17,24 @@ data class Post(
     var price: Int,
     @Column
     var image: String = "",
-    @Column(name = "typeofpost")
+    @Column(name = "type_of_post")
     @Enumerated(EnumType.STRING)
     var typeOfPost: TypeOfPost,
     @Column
     @Enumerated(EnumType.STRING)
     var status: PostStatus = PostStatus.HIDDEN,
-    @Column(name = "typeofestate")
+    @Column(name = "type_of_estate")
     @Enumerated(EnumType.STRING)
     var typeOfEstate: TypeOfEstate,
-    @Column(name = "userid")
-    var userId: Long = -1,
-    @Column(name = "phonenumber")
+    @Column(name = "user_id")
+    var userId: String = "",
+    @Column(name = "phone_number")
     var phoneNumber: String,
-    @Column(name = "ispaid")
+    @Column(name = "is_paid")
     var isPaid: Boolean,
-    @Column(name = "dateadded", nullable = false)
+    @Column(name = "date_added", nullable = false)
     var dateAdded: Date = Date(),
-    @Column(name = "lastwatched", nullable = false)
+    @Column(name = "last_watched", nullable = false)
     var lastWatched: Date = Date()
 )
 

@@ -20,7 +20,7 @@ class ArchiveService(
     private val subject = "Your data"
     private val text = "Here is the file which contains all the information we know about you"
 
-    fun makeArchive(userId: Long) {
+    fun makeArchive(userId: String) {
         val user: User = userService.findById(userId)
         val content = getContent(user)
 
@@ -36,7 +36,7 @@ class ArchiveService(
         return gson.toJson(archive)
     }
 
-    private fun createFile(userId: Long): String {
+    private fun createFile(userId: String): String {
         createDirectory()
 
         val jsonFile = File("$directoryName/$userId.json")

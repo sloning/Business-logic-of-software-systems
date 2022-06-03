@@ -34,7 +34,7 @@ data class Post(
     @Enumerated(EnumType.STRING)
     var typeOfEstate: TypeOfEstate,
     @Column
-    var userId: Long = -1,
+    var userId: String = "",
     @Column
     @field:Pattern(regexp = "^((\\+7|7|8)+([0-9]){10})\$", message = "Неверный номер телефона")
     var phoneNumber: String,
@@ -44,7 +44,7 @@ data class Post(
     var dateAdded: Date = Date(),
     @Column(nullable = false)
     var lastWatched: Date = Date()
-)
+) : java.io.Serializable
 
 enum class TypeOfPost { SALE, RENT }
 enum class TypeOfEstate { LAND, HOUSE, FLAT, ROOM }

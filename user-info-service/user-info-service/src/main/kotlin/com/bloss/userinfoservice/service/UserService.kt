@@ -2,7 +2,6 @@ package com.bloss.userinfoservice.service
 
 import com.bloss.userinfoservice.model.User
 import com.bloss.userinfoservice.repository.UserRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import javax.persistence.EntityNotFoundException
 
@@ -10,7 +9,7 @@ import javax.persistence.EntityNotFoundException
 class UserService(
     private val userRepository: UserRepository
 ) {
-    fun findById(id: Long): User {
-        return userRepository.findByIdOrNull(id) ?: throw EntityNotFoundException()
+    fun findById(id: String): User {
+        return userRepository.findById(id) ?: throw EntityNotFoundException()
     }
 }

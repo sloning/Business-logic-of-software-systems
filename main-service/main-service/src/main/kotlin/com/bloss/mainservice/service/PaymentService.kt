@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class PaymentService {
-    fun processPayment(userId: Long): Boolean {
+    fun processPayment(userId: String): Boolean {
         return true
     }
 }

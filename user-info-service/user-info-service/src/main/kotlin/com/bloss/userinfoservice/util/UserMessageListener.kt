@@ -10,6 +10,6 @@ import javax.jms.TextMessage
 class UserMessageListener(private val archiveService: ArchiveService) : MessageListener {
     override fun onMessage(message: Message) {
         val textMessage: TextMessage = message as TextMessage
-        archiveService.makeArchive(textMessage.text.toLong())
+        archiveService.makeArchive(textMessage.text)
     }
 }

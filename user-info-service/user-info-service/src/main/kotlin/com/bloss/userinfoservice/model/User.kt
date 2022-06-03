@@ -6,7 +6,7 @@ import javax.persistence.*
 @Table(name = "`user`")
 data class User(
     @Id @GeneratedValue
-    var id: Long = -1,
+    var id: String = "",
     @Column(unique = true)
     var email: String,
     @Column
@@ -15,12 +15,6 @@ data class User(
     var firstName: String,
     @Column(name = "secondname")
     var secondName: String,
-    @Column
-    @Enumerated
-    var role: Role = Role.ROLE_USER,
-    @Column(name = "userstatus")
-    @Enumerated
-    var userStatus: UserStatus = UserStatus.ACTIVE
 )
 
 enum class Role { ROLE_ADMIN, ROLE_USER, ROLE_MODERATOR }
